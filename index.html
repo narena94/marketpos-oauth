@@ -1,34 +1,44 @@
-<script>
-    const debug = document.getElementById('debug');
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MarketPOS OAuth Debug</title>
+</head>
+<body>
+    <h2>Debugging OAuth Redirect...</h2>
+    <div id="debug"></div>
+    <script>
+        const debug = document.getElementById('debug');
+            
+        // Show what we received
+        debug.innerHTML = '<p>Current URL: ' + window.location.href + '</p>';
         
-    // Show what we received
-    debug.innerHTML = '<p>Current URL: ' + window.location.href + '</p>';
-    
-    // Get OAuth parameters from URL
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    const state = params.get('state');
-    const error = params.get('error');
-    debug.innerHTML += '<p>Code: ' + code + '</p>';
-    debug.innerHTML += '<p>State: ' + state + '</p>';
-    
-    // Build app redirect URL
-    let appUrl = 'marketpos://squareCallback?';
-    if (code) appUrl += 'code=' + encodeURIComponent(code) + '&';
-    if (state) appUrl += 'state=' + encodeURIComponent(state) + '&';
-    if (error) appUrl += 'error=' + encodeURIComponent(error) + '&';
-    
-    console.log('Redirecting to:', appUrl);
-    debug.innerHTML += '<p>Attempting redirect to: ' + appUrl + '</p>';
-    
-    // Redirect to MarketPOS app
-    window.location.href = appUrl;
-    
-    // Show fallback message if redirect doesn't work
-    setTimeout(function() {
-        document.body.innerHTML = 
-            '<h2>OAuth Complete</h2>' +
-            '<p>If MarketPOS didn\'t open automatically, please return to the app manually.</p>' +
-            '<p><strong>Authorization ' + (error ? 'failed' : 'successful') + '</strong></p>';
-    }, 2000);
-</script>
+        // Get OAuth parameters from URL
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const state = params.get('state');
+        const error = params.get('error');
+        debug.innerHTML += '<p>Code: ' + code + '</p>';
+        debug.innerHTML += '<p>State: ' + state + '</p>';
+        
+        // Build app redirect URL
+        let appUrl = 'marketpos://squareCallback?';
+        if (code) appUrl += 'code=' + encodeURIComponent(code) + '&';
+        if (state) appUrl += 'state=' + encodeURIComponent(state) + '&';
+        if (error) appUrl += 'error=' + encodeURIComponent(error) + '&';
+        
+        console.log('Redirecting to:', appUrl);
+        debug.innerHTML += '<p>Attempting redirect to: ' + appUrl + '</p>';
+        
+        // Redirect to MarketPOS app
+        window.location.href = appUrl;
+        
+        // Show fallback message if redirect doesn't work
+        setTimeout(function() {
+            document.body.innerHTML = 
+                '<h2>OAuth Complete</h2>' +
+                '<p>If MarketPOS didn\'t open automatically, please return to the app manually.</p>' +
+                '<p><strong>Authorization ' + (error ? 'failed' : 'successful') + '</strong></p>';
+        }, 2000);
+    </script>
+</body>
+</html>
