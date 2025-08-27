@@ -1,9 +1,16 @@
 <script>
+    const debug = document.getElementById('debug');
+        
+    // Show what we received
+    debug.innerHTML = '<p>Current URL: ' + window.location.href + '</p>';
+    
     // Get OAuth parameters from URL
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const state = params.get('state');
     const error = params.get('error');
+    debug.innerHTML += '<p>Code: ' + code + '</p>';
+    debug.innerHTML += '<p>State: ' + state + '</p>';
     
     // Build app redirect URL
     let appUrl = 'marketpos://squareCallback?';
@@ -12,6 +19,7 @@
     if (error) appUrl += 'error=' + encodeURIComponent(error) + '&';
     
     console.log('Redirecting to:', appUrl);
+    debug.innerHTML += '<p>Attempting redirect to: ' + appUrl + '</p>';
     
     // Redirect to MarketPOS app
     window.location.href = appUrl;
