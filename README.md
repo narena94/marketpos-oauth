@@ -1,1 +1,39 @@
 # marketpos-oauth
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MarketPOS OAuth Redirect</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h2>Redirecting to MarketPOS...</h2>
+    <p>Please wait while we redirect you back to the app...</p>
+    
+    <script>
+        // Get OAuth parameters from URL
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const state = params.get('state');
+        const error = params.get('error');
+        
+        // Build app redirect URL
+        let appUrl = 'marketpos://squareCallback?';
+        if (code) appUrl += 'code=' + encodeURIComponent(code) + '&';
+        if (state) appUrl += 'state=' + encodeURIComponent(state) + '&';
+        if (error) appUrl += 'error=' + encodeURIComponent(error) + '&';
+        
+        console.log('Redirecting to:', appUrl);
+        
+        // Redirect to MarketPOS app
+        window.location.href = appUrl;
+        
+        // Show fallback message if redirect doesn't work
+        setTimeout(function() {
+            document.body.innerHTML = 
+                '<h2>OAuth Complete</h2>' +
+                '<p>If MarketPOS didn\'t open automatically, please return to the app manually.</p>' +
+                '<p><strong>Authorization ' + (error ? 'failed' : 'successful') + '</strong></p>';
+        }, 2000);
+    </script>
+</body>
+</html>
